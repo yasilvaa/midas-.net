@@ -8,7 +8,6 @@ O Midas é um app mobile que ajuda usuários a gerenciar suas finanças pessoais
 - Metas financeiras com progresso visual
 - Previsão de saldo no fim do mês (baseado em histórico e gastos médios)
 - Leitura de extrato bancário
-- Entrada de dados por voz
 - Cadastro e autenticação dos usuários
 
 ## Requisitos funcionais
@@ -20,7 +19,6 @@ O Midas é um app mobile que ajuda usuários a gerenciar suas finanças pessoais
 - O usuário deve poder criar metas financeiras com valor alvo e progresso
 - O sistema deve gerar relatórios mensais com resumo de gastos
 - O sistema deve realizar a leitura dos arquivos de extrato bancário enviados 
-- O app deve permitir entrada de dados por voz
 
 ## Requisitos não funcionais
 - A aplicação deve ser desenvolvida com arquitetura limpa (Clean Architecture)
