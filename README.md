@@ -42,7 +42,6 @@ O Midas é um app mobile que ajuda usuários a gerenciar suas finanças pessoais
 - `Midas.Application` — Regras de negócio e casos de uso
 - `Midas.Infrastructure` — Persistência e serviços externos
 - `Midas.API` — Camada de apresentação (Web API)
-- `Midas.Tests` — Testes unitários e de integração
 
 ## 👥 Equipe
 - Barbara Bonome Filipus - RM 560431 | 2TDSPR
