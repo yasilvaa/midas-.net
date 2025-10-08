@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Midas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cec4a6626278608a6580bf8d0e7e32c358976b1b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34be6f8fa7d7f6b2d989d57c1f2b392e12500eef")]
 [assembly: System.Reflection.AssemblyProductAttribute("Midas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Midas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
