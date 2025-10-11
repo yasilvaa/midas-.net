@@ -22,24 +22,37 @@ O Midas é um app mobile que ajuda usuários a gerenciar suas finanças pessoais
 
 ## Requisitos não funcionais
 - A aplicação deve ser desenvolvida com arquitetura limpa (Clean Architecture)
-- A API deve ser construída em ASP.NET Core com Entity Framework **>>>>>>>>>>>>>>>> validar**
-- O sistema deve utilizar banco de dados relacional (SQL Server ou SQLite) **>>>>>>>>>>>>>>>> validar**
+- A API deve ser construída em ASP.NET Core com Entity Framework
+- O sistema deve utilizar banco de dados
 - O app mobile deve ser desenvolvido com React Native
 - O sistema deve garantir segurança no armazenamento de dados sensíveis
-- O tempo de resposta da API deve ser inferior a 500ms para operações básicas
 - O sistema deve ser intuitivo para o usuário final
 - O código deve seguir boas práticas de versionamento e testes automatizados
 
-## 🧱 Tecnologias >>>>> validar
-- .NET 8 com ASP.NET Core (API)
+## 🧱 Tecnologia
+- .NET 9 com ASP.NET Core (API)
 - Entity Framework Core
 - Clean Architecture
 
-## 📁 Estrutura do Projeto  >>>>> validar
-- `Midas.Domain` — Entidades e interfaces
-- `Midas.Application` — Regras de negócio e casos de uso
-- `Midas.Infrastructure` — Persistência e serviços externos
-- `Midas.API` — Camada de apresentação (Web API)
+## 📁 Estrutura do Projeto
+- **Controllers**: Camada de apresentação (API endpoints)
+- **DTOs**: Objetos de transferência de dados
+- **UseCase**: Lógica de negócio e regras de domínio
+- **Infrastructure**: Acesso a dados e persistência
+- **Utils**: Utilitários e configurações
+- 
+- A API Midas possui os seguintes controladores:
+- **📊 Categoria**: `/api/categoria`
+- **👤 Usuario**: `/api/usuario`
+- **🪙 Cofrinho**: `/api/cofrinho`
+- **💸 Gasto**: `/api/gasto`
+- **💰 Receita**: `/api/receita`
+
+## Instruções para rodar o projeto localmente
+   #### Ambiente de Desenvolvimento
+- **Swagger UI**: `https://localhost:7018/swagger` ou `http://localhost:5220/swagger`
+          **Nota**: Em outros casos, substitua pelas portas específicas configuradas no seu projeto. As portas padrão são exibidas no console quando a aplicação inicia.
+- Verifique se o Swagger está configurado no `Program.cs`
 
 ## 👥 Equipe
 - Barbara Bonome Filipus - RM 560431 | 2TDSPR
