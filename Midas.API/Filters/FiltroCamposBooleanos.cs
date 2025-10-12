@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Any;
 
+
 namespace Midas.API.Filters
 {
     public class FiltroCamposBooleanos : ISchemaFilter
