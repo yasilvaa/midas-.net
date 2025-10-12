@@ -14,6 +14,7 @@ public class CofrinhoRepository : ICofrinhoRepository
 
     public async Task<Cofrinho> AddAsync(Cofrinho cofrinho)
     {
+        cofrinho.Aplicado = NormalizeAplicadoValue(cofrinho.Aplicado);
         await _context.Cofrinhos.AddAsync(cofrinho);
         await _context.SaveChangesAsync();
         return cofrinho;
@@ -35,6 +36,7 @@ public class CofrinhoRepository : ICofrinhoRepository
 
     public async Task UpdateAsync(Cofrinho cofrinho)
     {
+        cofrinho.Aplicado = NormalizeAplicadoValue(cofrinho.Aplicado);
         _context.Cofrinhos.Update(cofrinho);
         await _context.SaveChangesAsync();
     }
@@ -57,5 +59,9 @@ public class CofrinhoRepository : ICofrinhoRepository
         cofrinho.Atingido = valorAtingido;
         await _context.SaveChangesAsync();
         return true;
+    }
+    private char NormalizeAplicadoValue(char aplicado)
+    {
+        return char.ToUpper(aplicado) == 'T' ? 'T' : 'F';
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Midas.Infrastructure.Persistence;
 using Midas.Infrastructure.Persistence.Repositories;
 using System.Text.Json.Serialization;
+using Midas.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,17 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();
+    c.SchemaFilter<FiltroCamposBooleanos>();
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Midas API",
+        Version = "v1",
+        Description = "API para controle financeiro - Sistema Midas"
+    });
+});
 
 // Configure DbContext for Oracle
 builder.Services.AddDbContext<MidasContext>(options =>
@@ -44,7 +55,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Midas API v1");
+        c.RoutePrefix = "swagger";
+        c.DocumentTitle = "Midas API Documentation";
+    });
     app.UseDeveloperExceptionPage();
 }
 

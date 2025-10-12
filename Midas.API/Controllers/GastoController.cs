@@ -34,6 +34,8 @@ namespace Midas.Controllers
         [HttpPost]
         public async Task<ActionResult<Gasto>> Create([FromBody] Gasto gasto)
         {
+            gasto.Fixo = NormalizeFixoValue(gasto.Fixo);
+
             var result = await _gastoRepository.AddAsync(gasto);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
@@ -44,6 +46,8 @@ namespace Midas.Controllers
             if (id != gasto.Id)
                 return BadRequest();
 
+            gasto.Fixo = NormalizeFixoValue(gasto.Fixo);
+
             await _gastoRepository.UpdateAsync(gasto);
             return NoContent();
         }
@@ -53,6 +57,11 @@ namespace Midas.Controllers
         {
             await _gastoRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+        private char NormalizeFixoValue(char fixo)
+        {
+            return char.ToUpper(fixo) == 'T' ? 'T' : 'F';
         }
     }
 }

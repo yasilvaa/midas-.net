@@ -34,8 +34,20 @@ namespace Midas.Controllers
         [HttpPost]
         public async Task<ActionResult<Cofrinho>> Create([FromBody] Cofrinho cofrinho)
         {
-            var result = await _cofrinhoRepository.AddAsync(cofrinho);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            cofrinho.Aplicado = NormalizeAplicadoValue(cofrinho.Aplicado);
+
+            try
+            {
+                var result = await _cofrinhoRepository.AddAsync(cofrinho);
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao criar cofrinho: {ex.Message}");
+            }
         }
 
         [HttpPut("{id}")]
@@ -44,8 +56,20 @@ namespace Midas.Controllers
             if (id != cofrinho.Id)
                 return BadRequest();
 
-            await _cofrinhoRepository.UpdateAsync(cofrinho);
-            return NoContent();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            cofrinho.Aplicado = NormalizeAplicadoValue(cofrinho.Aplicado);
+
+            try
+            {
+                await _cofrinhoRepository.UpdateAsync(cofrinho);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao atualizar cofrinho: {ex.Message}");
+            }
         }
 
         [HttpPut("{id}/progresso")]
@@ -63,6 +87,11 @@ namespace Midas.Controllers
         {
             await _cofrinhoRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+        private char NormalizeAplicadoValue(char aplicado)
+        {
+            return char.ToUpper(aplicado) == 'T' ? 'T' : 'F';
         }
     }
 }

@@ -7,6 +7,6 @@
         public string Titulo { get; set; }
         public DateTime Data { get; set; }
         public decimal Valor { get; set; }
-        public string Fixo { get; set; }
+        public char Fixo { get; set; }
     }
 }

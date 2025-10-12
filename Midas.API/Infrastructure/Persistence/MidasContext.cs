@@ -41,7 +41,7 @@ namespace Midas.Infrastructure.Persistence
                 entity.Property(e => e.Titulo).HasColumnName("TT_COFRINHO").HasMaxLength(50).IsRequired();
                 entity.Property(e => e.Meta).HasColumnName("META").HasColumnType("NUMBER(10,2)").IsRequired();
                 entity.Property(e => e.Atingido).HasColumnName("ATINGIDO").HasColumnType("NUMBER(10,2)").IsRequired();
-                entity.Property(e => e.Aplicado).HasColumnName("APLICADO").HasMaxLength(1).IsRequired();
+                entity.Property(e => e.Aplicado).HasColumnName("APLICADO").HasColumnType("CHAR(1)").IsRequired();
             });
 
             // Configuração de Categoria
@@ -65,7 +65,7 @@ namespace Midas.Infrastructure.Persistence
                 entity.Property(e => e.Titulo).HasColumnName("TT_GASTO").HasMaxLength(50).IsRequired();
                 entity.Property(e => e.Data).HasColumnName("DT_GASTO").IsRequired();
                 entity.Property(e => e.Valor).HasColumnName("VL_GASTO").HasColumnType("NUMBER(10,2)").IsRequired();
-                entity.Property(e => e.Fixo).HasColumnName("FX_GASTO").HasMaxLength(1).IsRequired();
+                entity.Property(e => e.Fixo).HasColumnName("FX_GASTO").HasColumnType("CHAR(1)").IsRequired();
             });
 
             // Configuração de Receita
@@ -78,7 +78,7 @@ namespace Midas.Infrastructure.Persistence
                 entity.Property(e => e.Titulo).HasColumnName("TT_RECEITA").HasMaxLength(50).IsRequired();
                 entity.Property(e => e.Data).HasColumnName("DT_RECEITA").IsRequired();
                 entity.Property(e => e.Valor).HasColumnName("VL_RECEITA").HasColumnType("NUMBER(10,2)").IsRequired();
-                entity.Property(e => e.Fixo).HasColumnName("FX_RECEITA").HasMaxLength(1).IsRequired();
+                entity.Property(e => e.Fixo).HasColumnName("FX_RECEITA").HasColumnType("CHAR(1)").IsRequired();
             });
         }
     }

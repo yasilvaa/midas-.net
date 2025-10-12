@@ -7,6 +7,6 @@
         public string Titulo { get; set; }
         public decimal Meta { get; set; }
         public decimal Atingido { get; set; }
-        public string Aplicado { get; set; } = "F";
+        public char Aplicado { get; set; } = 'F';
     }
 }

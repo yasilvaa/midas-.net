@@ -65,10 +65,7 @@ namespace Midas.API.Controllers
                 if (receita.Valor <= 0)
                     return BadRequest("Valor deve ser maior que zero");
 
-                if (string.IsNullOrEmpty(receita.Fixo))
-                    receita.Fixo = "F";
-                else if (receita.Fixo != "T" && receita.Fixo != "F")
-                    return BadRequest("Campo Fixo deve ser 'T' ou 'F'");
+                receita.Fixo = NormalizeFixoValue(receita.Fixo);
 
                 var result = await _receitaRepository.CreateAsync(receita);
                 
@@ -90,12 +87,7 @@ namespace Midas.API.Controllers
 
                 if (id != receita.Id)
                     return BadRequest("ID do parâmetro não confere com o ID da receita");
-
-                // Validar campo Fixo
-                if (string.IsNullOrEmpty(receita.Fixo))
-                    receita.Fixo = "F";
-                else if (receita.Fixo != "T" && receita.Fixo != "F")
-                    return BadRequest("Campo Fixo deve ser 'T' ou 'F'");
+                receita.Fixo = NormalizeFixoValue(receita.Fixo);
 
                 var existingReceita = await _receitaRepository.GetByIdAsync(id);
                 if (existingReceita == null)
@@ -126,6 +118,11 @@ namespace Midas.API.Controllers
             {
                 return StatusCode(500, "Erro interno do servidor");
             }
+        }
+
+        private char NormalizeFixoValue(char fixo)
+        {
+            return char.ToUpper(fixo) == 'T' ? 'T' : 'F';
         }
     }
 }
