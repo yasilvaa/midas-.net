@@ -6,6 +6,9 @@ using Midas.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5220";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -20,10 +23,10 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<FiltroCamposBooleanos>();
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "Midas API",
+     Title = "Midas API",
         Version = "v1",
         Description = "API para controle financeiro - Sistema Midas"
-    });
+});
 });
 
 // Configure DbContext for Oracle
@@ -41,16 +44,17 @@ builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 // Configure CORS - mais permissivo para desenvolvimento
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
-              .AllowAnyHeader();
+          .AllowAnyHeader();
     });
 });
 
 var app = builder.Build();
 
+// Adicionar CORS antes de outras middlewares
 app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
@@ -60,16 +64,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Midas API v1");
-        c.RoutePrefix = "swagger";
+    c.RoutePrefix = "swagger";
         c.DocumentTitle = "Midas API Documentation";
     });
     app.UseDeveloperExceptionPage();
 }
 
-// Adicionar CORS antes de outras middlewares
-app.UseCors();
-
-app.UseHttpsRedirection();
+// Comentando HTTPS redirect para testes
+// app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
