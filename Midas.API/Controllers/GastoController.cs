@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Midas.Infrastructure.Persistence.Entities;
 using Midas.Infrastructure.Persistence.Repositories;
+using Midas.API.DTOs;
 
 namespace Midas.Controllers
 {
@@ -32,9 +33,20 @@ namespace Midas.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Gasto>> Create([FromBody] Gasto gasto)
+        public async Task<ActionResult<Gasto>> Create([FromBody] CreateGastoDTO createGastoDTO)
         {
-            gasto.Fixo = NormalizeFixoValue(gasto.Fixo);
+            if (createGastoDTO == null)
+                return BadRequest("Dados do gasto são obrigatórios");
+
+            var gasto = new Gasto
+            {
+                UsuarioId = createGastoDTO.UsuarioId,
+                CategoriaId = createGastoDTO.CategoriaId,
+                Titulo = createGastoDTO.Titulo,
+                Data = createGastoDTO.Data,
+                Valor = createGastoDTO.Valor,
+                Fixo = NormalizeFixoValue(createGastoDTO.Fixo)
+            };
 
             var result = await _gastoRepository.AddAsync(gasto);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);

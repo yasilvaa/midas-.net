@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Midas.Infrastructure.Persistence.Entities;
 using Midas.Infrastructure.Persistence.Repositories;
+using Midas.API.DTOs;
 
 namespace Midas.Controllers
 {
@@ -49,26 +50,33 @@ namespace Midas.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Usuario>> Create([FromBody] Usuario usuario)
+        public async Task<ActionResult<Usuario>> Create([FromBody] CreateUsuarioDTO createUsuarioDTO)
         {
             try
             {
-                _logger.LogInformation("Tentando criar usuário: {Email}", usuario?.Email);
+                _logger.LogInformation("Tentando criar usuário: {Email}", createUsuarioDTO?.Email);
 
-                if (usuario == null)
+                if (createUsuarioDTO == null)
                     return BadRequest("Dados do usuário são obrigatórios");
 
-                if (string.IsNullOrEmpty(usuario.Nome))
+                if (string.IsNullOrEmpty(createUsuarioDTO.Nome))
                     return BadRequest("Nome é obrigatório");
 
-                if (string.IsNullOrEmpty(usuario.Email))
+                if (string.IsNullOrEmpty(createUsuarioDTO.Email))
                     return BadRequest("Email é obrigatório");
 
-                if (string.IsNullOrEmpty(usuario.Senha))
+                if (string.IsNullOrEmpty(createUsuarioDTO.Senha))
                     return BadRequest("Senha é obrigatória");
 
-                if (await _usuarioRepository.EmailExistsAsync(usuario.Email))
+                if (await _usuarioRepository.EmailExistsAsync(createUsuarioDTO.Email))
                     return BadRequest("Email já está em uso");
+
+                var usuario = new Usuario
+                {
+                    Nome = createUsuarioDTO.Nome,
+                    Email = createUsuarioDTO.Email,
+                    Senha = createUsuarioDTO.Senha
+                };
 
                 var result = await _usuarioRepository.AddAsync(usuario);
                 

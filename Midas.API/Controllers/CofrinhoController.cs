@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Midas.Infrastructure.Persistence.Entities;
 using Midas.Infrastructure.Persistence.Repositories;
+using Midas.API.DTOs;
 
 namespace Midas.Controllers
 {
@@ -32,12 +33,22 @@ namespace Midas.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Cofrinho>> Create([FromBody] Cofrinho cofrinho)
+        public async Task<ActionResult<Cofrinho>> Create([FromBody] CreateCofrinhoDTO createCofrinhoDTO)
         {
+            if (createCofrinhoDTO == null)
+                return BadRequest("Dados do cofrinho são obrigatórios");
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            cofrinho.Aplicado = NormalizeAplicadoValue(cofrinho.Aplicado);
+            var cofrinho = new Cofrinho
+            {
+                UsuarioId = createCofrinhoDTO.UsuarioId,
+                Titulo = createCofrinhoDTO.Titulo,
+                Meta = createCofrinhoDTO.Meta,
+                Atingido = createCofrinhoDTO.Atingido,
+                Aplicado = NormalizeAplicadoValue(createCofrinhoDTO.Aplicado)
+            };
 
             try
             {

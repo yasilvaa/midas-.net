@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Midas.Infrastructure.Persistence.Entities;
 using Midas.Infrastructure.Persistence.Repositories;
+using Midas.API.DTOs;
 
 namespace Midas.API.Controllers
 {
@@ -14,6 +15,7 @@ namespace Midas.API.Controllers
         public ReceitaController(IReceitaRepository receitaRepository, ILogger<ReceitaController> logger)
         {
             _receitaRepository = receitaRepository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -48,27 +50,33 @@ namespace Midas.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Receita>> Create([FromBody] Receita receita)
+        public async Task<ActionResult<Receita>> Create([FromBody] CreateReceitaDTO createReceitaDTO)
         {
             try
             {
-
-                if (receita == null)
+                if (createReceitaDTO == null)
                     return BadRequest("Dados da receita são obrigatórios");
 
-                if (string.IsNullOrEmpty(receita.Titulo))
+                if (string.IsNullOrEmpty(createReceitaDTO.Titulo))
                     return BadRequest("Título é obrigatório");
 
-                if (receita.UsuarioId <= 0)
+                if (createReceitaDTO.UsuarioId <= 0)
                     return BadRequest("UsuarioId é obrigatório");
 
-                if (receita.Valor <= 0)
+                if (createReceitaDTO.Valor <= 0)
                     return BadRequest("Valor deve ser maior que zero");
 
-                receita.Fixo = NormalizeFixoValue(receita.Fixo);
+                var receita = new Receita
+                {
+                    UsuarioId = createReceitaDTO.UsuarioId,
+                    Titulo = createReceitaDTO.Titulo,
+                    Data = createReceitaDTO.Data,
+                    Valor = createReceitaDTO.Valor,
+                    Fixo = NormalizeFixoValue(createReceitaDTO.Fixo)
+                };
 
                 var result = await _receitaRepository.CreateAsync(receita);
-                
+
                 return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
             }
             catch (Exception ex)

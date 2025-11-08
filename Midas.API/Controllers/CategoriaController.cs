@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Midas.Infrastructure.Persistence.Entities;
 using Midas.Infrastructure.Persistence.Repositories;
+using Midas.API.DTOs;
 
 namespace Midas.Controllers
 {
@@ -32,8 +33,18 @@ namespace Midas.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Categoria>> Create([FromBody] Categoria categoria)
+        public async Task<ActionResult<Categoria>> Create([FromBody] CreateCategoriaDTO createCategoriaDTO)
         {
+            if (createCategoriaDTO == null)
+                return BadRequest("Dados da categoria são obrigatórios");
+
+            var categoria = new Categoria
+            {
+                Nome = createCategoriaDTO.Nome,
+                Descricao = createCategoriaDTO.Descricao
+                // gera ID automático
+            };
+
             var result = await _categoriaRepository.AddAsync(categoria);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
