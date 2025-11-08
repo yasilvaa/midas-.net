@@ -65,5 +65,19 @@ namespace Midas.Controllers
             await _categoriaRepository.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedResult<Categoria>>> Search([FromQuery] CategoriaSearchParameters parameters)
+        {
+            try
+            {
+                var result = await _categoriaRepository.SearchAsync(parameters);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
     }
 }

@@ -100,6 +100,20 @@ namespace Midas.Controllers
             return NoContent();
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedResult<Cofrinho>>> Search([FromQuery] CofrinhoSearchParameters parameters)
+        {
+            try
+            {
+                var result = await _cofrinhoRepository.SearchAsync(parameters);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
         private char NormalizeAplicadoValue(char aplicado)
         {
             return char.ToUpper(aplicado) == 'T' ? 'T' : 'F';

@@ -1,4 +1,5 @@
 ﻿using Midas.Infrastructure.Persistence.Entities;
+using Midas.API.DTOs;
 
 namespace Midas.Infrastructure.Persistence.Repositories
 {
@@ -10,5 +11,6 @@ namespace Midas.Infrastructure.Persistence.Repositories
         Task UpdateAsync(Cofrinho cofrinho);
         Task DeleteAsync(int id);
         Task<bool> AtualizarProgresso(int id, decimal valorAtingido);
+        Task<PagedResult<Cofrinho>> SearchAsync(CofrinhoSearchParameters parameters);
     }
 }

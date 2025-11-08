@@ -1,4 +1,5 @@
 using Midas.Infrastructure.Persistence.Entities;
+using Midas.API.DTOs;
 
 namespace Midas.Infrastructure.Persistence.Repositories
 {
@@ -9,5 +10,6 @@ namespace Midas.Infrastructure.Persistence.Repositories
         Task<List<Categoria>> GetAllAsync();
         Task UpdateAsync(Categoria categoria);
         Task DeleteAsync(int id);
+        Task<PagedResult<Categoria>> SearchAsync(CategoriaSearchParameters parameters);
     }
 }

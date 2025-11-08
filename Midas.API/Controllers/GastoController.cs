@@ -71,6 +71,20 @@ namespace Midas.Controllers
             return NoContent();
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedResult<Gasto>>> Search([FromQuery] GastoSearchParameters parameters)
+        {
+            try
+            {
+                var result = await _gastoRepository.SearchAsync(parameters);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
         private char NormalizeFixoValue(char fixo)
         {
             return char.ToUpper(fixo) == 'T' ? 'T' : 'F';

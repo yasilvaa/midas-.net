@@ -1,6 +1,7 @@
 ﻿using System;
 using Midas.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
+using Midas.API.DTOs;
 
 namespace Midas.Infrastructure.Persistence.Repositories;
 
@@ -60,5 +61,56 @@ public class UsuarioRepository : IUsuarioRepository
     public async Task<bool> EmailExistsAsync(string email)
     {
         return await _context.Usuarios.AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<PagedResult<Usuario>> SearchAsync(UsuarioSearchParameters parameters)
+    {
+        var query = _context.Usuarios.AsQueryable();
+
+        if (!string.IsNullOrEmpty(parameters.Nome))
+        {
+            query = query.Where(u => u.Nome.Contains(parameters.Nome));
+        }
+
+        if (!string.IsNullOrEmpty(parameters.Email))
+        {
+            query = query.Where(u => u.Email.Contains(parameters.Email));
+        }
+
+        if (parameters.DataCriacaoInicio.HasValue)
+        {
+            query = query.Where(u => u.DataCriacao >= parameters.DataCriacaoInicio.Value);
+        }
+
+        if (parameters.DataCriacaoFim.HasValue)
+        {
+            query = query.Where(u => u.DataCriacao <= parameters.DataCriacaoFim.Value);
+        }
+
+        var totalRecords = await query.CountAsync();
+
+        query = parameters.OrderBy.ToLower() switch
+        {
+            "nome" => parameters.Direction.ToLower() == "desc"
+                ? query.OrderByDescending(u => u.Nome)
+                : query.OrderBy(u => u.Nome),
+            "email" => parameters.Direction.ToLower() == "desc"
+                ? query.OrderByDescending(u => u.Email)
+                : query.OrderBy(u => u.Email),
+            "datacriacao" => parameters.Direction.ToLower() == "desc"
+                ? query.OrderByDescending(u => u.DataCriacao)
+                : query.OrderBy(u => u.DataCriacao),
+            _ => parameters.Direction.ToLower() == "desc"
+                ? query.OrderByDescending(u => u.Id)
+                : query.OrderBy(u => u.Id)
+        };
+
+        var data = await query
+            .Skip(parameters.Skip)
+            .Take(parameters.Size)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return new PagedResult<Usuario>(data, totalRecords, parameters.Page, parameters.Size);
     }
 }

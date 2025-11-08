@@ -129,5 +129,20 @@ namespace Midas.Controllers
                 return StatusCode(500, "Erro interno do servidor");
             }
         }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedResult<Usuario>>> Search([FromQuery] UsuarioSearchParameters parameters)
+        {
+            try
+            {
+                var result = await _usuarioRepository.SearchAsync(parameters);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar usuários com parâmetros: {@Parameters}", parameters);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
     }
 }

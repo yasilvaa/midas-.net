@@ -1,4 +1,5 @@
 ﻿using Midas.Infrastructure.Persistence.Entities;
+using Midas.API.DTOs;
 
 namespace Midas.Infrastructure.Persistence.Repositories
 {
@@ -11,5 +12,6 @@ namespace Midas.Infrastructure.Persistence.Repositories
         Task UpdateAsync(Usuario usuario);
         Task DeleteAsync(int id);
         Task<bool> EmailExistsAsync(string email);
+        Task<PagedResult<Usuario>> SearchAsync(UsuarioSearchParameters parameters);
     }
 }

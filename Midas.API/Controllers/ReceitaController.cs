@@ -128,6 +128,21 @@ namespace Midas.API.Controllers
             }
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedResult<Receita>>> Search([FromQuery] ReceitaSearchParameters parameters)
+        {
+            try
+            {
+                var result = await _receitaRepository.SearchAsync(parameters);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar receitas com parâmetros: {@Parameters}", parameters);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
         private char NormalizeFixoValue(char fixo)
         {
             return char.ToUpper(fixo) == 'T' ? 'T' : 'F';
