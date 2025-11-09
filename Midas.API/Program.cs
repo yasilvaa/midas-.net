@@ -3,6 +3,7 @@ using Midas.Infrastructure.Persistence;
 using Midas.Infrastructure.Persistence.Repositories;
 using System.Text.Json.Serialization;
 using Midas.API.Filters;
+using Midas.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<FiltroCamposBooleanos>();
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-     Title = "Midas API",
-        Version = "v1",
+   Title = "Midas API",
+    Version = "v1",
         Description = "API para controle financeiro - Sistema Midas"
 });
 });
@@ -41,13 +42,16 @@ builder.Services.AddScoped<IReceitaRepository, ReceitaRepository>();
 builder.Services.AddScoped<ICofrinhoRepository, CofrinhoRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 
+// Register HATEOAS service
+builder.Services.AddScoped<HateoasLinkGenerator>();
+
 // Configure CORS - mais permissivo para desenvolvimento
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
+policy.AllowAnyOrigin()
+       .AllowAnyMethod()
           .AllowAnyHeader();
     });
 });
@@ -63,11 +67,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Midas API v1");
+ c.SwaggerEndpoint("/swagger/v1/swagger.json", "Midas API v1");
     c.RoutePrefix = "swagger";
-        c.DocumentTitle = "Midas API Documentation";
+   c.DocumentTitle = "Midas API Documentation";
     });
-    app.UseDeveloperExceptionPage();
+  app.UseDeveloperExceptionPage();
 }
 
 // Comentando HTTPS redirect para testes
